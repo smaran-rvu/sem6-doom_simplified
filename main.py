@@ -54,7 +54,7 @@ def main():
     ]
 
     player = Player()
-    game_map = generate_map(10, 10)
+    game_map = generate_map()
     enemies = []
     bullets = []
 
@@ -78,8 +78,9 @@ def main():
                     running = False
                 elif event.key == pygame.K_r:
                     player.ammo = MAX_AMMO
+                # Find the section where you handle the 'm' key press and update it:
                 elif event.key == pygame.K_m:
-                    game_map = generate_map(10, 10)
+                    game_map = generate_map()  # This will clear _used_spawn_positions
                     enemies.clear()
                     for _ in range(MAX_ENEMIES):
                         enemies.append(
