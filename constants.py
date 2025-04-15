@@ -16,6 +16,7 @@ SHOOTING_COOLDOWN = 100  # milliseconds
 ENEMY_DAMAGE_DISTANCE = 1.5
 PLAYER_HEALTH = 1000
 ENEMY_HEALTH = 50
+ENEMY_DAMAGE = 100
 
 # Enemy and bullet properties
 ENEMY_HEIGHT = 0.2
@@ -24,4 +25,4 @@ ENEMY_RESPAWN_TIME = 8000  # milliseconds
 MAX_ENEMIES = 5  # Maximum number of enemies at once
 MAX_AMMO = 300
 
-DAMAGE_COOLDOWN = 1000
+DAMAGE_COOLDOWN = 1000  # milliseconds

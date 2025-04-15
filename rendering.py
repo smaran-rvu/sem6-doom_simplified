@@ -193,7 +193,6 @@ def draw_hud(player):
     draw_text(10, SCREEN_HEIGHT - 60, f"Score: {player.score}")
     draw_text(SCREEN_WIDTH - 150, SCREEN_HEIGHT - 60, f"Ammo: {player.ammo}/300")
 
-
     # Restore matrices
     glPopMatrix()
     glMatrixMode(GL_PROJECTION)
@@ -243,7 +242,6 @@ def draw_hud(player):
     glEnable(GL_DEPTH_TEST)
     glEnable(GL_TEXTURE_2D)
     glEnable(GL_LIGHTING)  # Re-enable lighting for 3D scene
-    
 
     glEnable(GL_DEPTH_TEST)
     glEnable(GL_TEXTURE_2D)  # Add this line

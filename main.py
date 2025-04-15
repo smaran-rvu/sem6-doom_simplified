@@ -13,6 +13,7 @@ import rendering
 # from bullet import Bullet
 from collisions import is_too_close_to_wall, is_wall
 from constants import (
+    ENEMY_DAMAGE,
     ENEMY_HEALTH,
     ENEMY_HEIGHT,
     ENEMY_RESPAWN_TIME,
@@ -37,7 +38,7 @@ def main():
     pygame.display.gl_set_attribute(pygame.GL_ALPHA_SIZE, 8)
     pygame.display.gl_set_attribute(pygame.GL_DEPTH_SIZE, 24)
     pygame.display.gl_set_attribute(pygame.GL_DOUBLEBUFFER, 1)
-    
+
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
     pygame.display.set_caption("DOOM-like Game")
     glutInit()  # For GLUT font rendering
@@ -52,16 +53,20 @@ def main():
     glEnable(GL_LIGHT0)
     glEnable(GL_COLOR_MATERIAL)
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
-    
+
     # Set up fixed light in center of map (assuming 10x10 map)
-    glLight(GL_LIGHT0, GL_POSITION, (5.0, 3.0, 5.0, 1.0))  # Center position (x=5, y=3, z=5)
-    glLight(GL_LIGHT0, GL_AMBIENT, (0.5, 0.5, 0.5, 0.5))   # Low ambient light for dark corners
-    glLight(GL_LIGHT0, GL_SPECULAR, (1.0, 1.0, 1.0, 1.0))   # Bright diffuse for center
-    
+    glLight(
+        GL_LIGHT0, GL_POSITION, (5.0, 3.0, 5.0, 1.0)
+    )  # Center position (x=5, y=3, z=5)
+    glLight(
+        GL_LIGHT0, GL_AMBIENT, (0.5, 0.5, 0.5, 0.5)
+    )  # Low ambient light for dark corners
+    glLight(GL_LIGHT0, GL_SPECULAR, (1.0, 1.0, 1.0, 1.0))  # Bright diffuse for center
+
     # Increase attenuation for faster darkness falloff
     glLight(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.1)
-    glLight(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.2)         # Increased linear falloff
-    glLight(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.08)     # Increased quadratic falloff
+    glLight(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.2)  # Increased linear falloff
+    glLight(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.08)  # Increased quadratic falloff
 
     # Simple material properties
     glMaterial(GL_FRONT, GL_SPECULAR, (0.0, 0.0, 0.0, 1.0))
@@ -159,10 +164,12 @@ def main():
                     player, game_map, is_wall, is_too_close_to_wall
                 ):
                     # Use the take_damage method with cooldown
-                    if player.take_damage(10, current_time):
-                        print(f"Player took damage! Health: {player.health}")
+                    if player.take_damage(ENEMY_DAMAGE, current_time):
+                        continue
+                        # print(f"Player took damage! Health: {player.health}")
 
                     if player.health <= 0:
+                        print(f"Final Score: {player.score}")
                         print("Game Over")
                         running = False
 
