@@ -31,11 +31,21 @@ class Player:
         new_x = self.position[0] - dx
         new_z = self.position[2] - dz
 
-        # Prevent movement if target position is a wall or too close to one.
+        # First try moving in both directions
         if not is_wall(new_x, new_z, game_map) and not is_too_close_to_wall(
             new_x, new_z, game_map
         ):
             self.position[0] = new_x
+            self.position[2] = new_z
+        # If that fails, try moving only in X direction
+        elif not is_wall(
+            new_x, self.position[2], game_map
+        ) and not is_too_close_to_wall(new_x, self.position[2], game_map):
+            self.position[0] = new_x
+        # If that fails, try moving only in Z direction
+        elif not is_wall(
+            self.position[0], new_z, game_map
+        ) and not is_too_close_to_wall(self.position[0], new_z, game_map):
             self.position[2] = new_z
 
     def strafe(self, direction, game_map, is_wall, is_too_close_to_wall):
@@ -46,10 +56,21 @@ class Player:
         new_x = self.position[0] - dx
         new_z = self.position[2] - dz
 
+        # First try moving in both directions
         if not is_wall(new_x, new_z, game_map) and not is_too_close_to_wall(
             new_x, new_z, game_map
         ):
             self.position[0] = new_x
+            self.position[2] = new_z
+        # If that fails, try moving only in X direction
+        elif not is_wall(
+            new_x, self.position[2], game_map
+        ) and not is_too_close_to_wall(new_x, self.position[2], game_map):
+            self.position[0] = new_x
+        # If that fails, try moving only in Z direction
+        elif not is_wall(
+            self.position[0], new_z, game_map
+        ) and not is_too_close_to_wall(self.position[0], new_z, game_map):
             self.position[2] = new_z
 
     def rotate(self, angle_change):

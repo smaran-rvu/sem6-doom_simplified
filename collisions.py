@@ -6,15 +6,21 @@ def is_too_close_to_wall(x, z, game_map):
     Check if the given position is too close to a wall.
     This is used to prevent getting too close to walls which would look unnatural.
     """
-    # Define a small buffer distance from walls
+    # Increase the buffer distance from walls
     buffer = 0.3
-    # Check the position itself and positions slightly offset in four directions
+
+    # Check positions in 8 directions (including diagonals) to catch corner cases
     return (
         is_wall(x, z, game_map)
         or is_wall(x + buffer, z, game_map)
         or is_wall(x - buffer, z, game_map)
         or is_wall(x, z + buffer, game_map)
         or is_wall(x, z - buffer, game_map)
+        # Add diagonal checks
+        or is_wall(x + buffer, z + buffer, game_map)
+        or is_wall(x - buffer, z - buffer, game_map)
+        or is_wall(x + buffer, z - buffer, game_map)
+        or is_wall(x - buffer, z + buffer, game_map)
     )
 
 

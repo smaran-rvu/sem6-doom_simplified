@@ -41,7 +41,7 @@ def main():
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
     glMatrixMode(GL_PROJECTION)
-    gluPerspective(FOV, (display[0] / display[1]), 0.1, 50.0)
+    gluPerspective(FOV, (display[0] / display[1]), 0.2, 50.0)
     glMatrixMode(GL_MODELVIEW)
 
     # Load textures (ensure texture paths are correct)
