@@ -159,6 +159,55 @@ def draw_hud(player):
     glPushMatrix()
     glLoadIdentity()
 
+    # Disable effects that should not affect HUD
+    glDisable(GL_DEPTH_TEST)
+    glDisable(GL_TEXTURE_2D)
+    glDisable(GL_LIGHTING)  # Disable lighting for HUD elements
+    glEnable(GL_BLEND)
+
+    # Draw health bar background (red)
+    health_width = 200
+    health_height = 20
+    x = 10
+    y = SCREEN_HEIGHT - 30
+    glColor3f(1.0, 0.0, 0.0)
+    glBegin(GL_QUADS)
+    glVertex2f(x, y)
+    glVertex2f(x + health_width, y)
+    glVertex2f(x + health_width, y + health_height)
+    glVertex2f(x, y + health_height)
+    glEnd()
+
+    # Draw health bar overlay (green)
+    glColor3f(1.0, 1.0, 1.0)
+    health_percentage = max(0, player.health / 1000)
+    glBegin(GL_QUADS)
+    glVertex2f(x, y)
+    glVertex2f(x + health_width * health_percentage, y)
+    glVertex2f(x + health_width * health_percentage, y + health_height)
+    glVertex2f(x, y + health_height)
+    glEnd()
+
+    # Draw text
+    glColor3f(1.0, 1.0, 1.0)
+    draw_text(10, SCREEN_HEIGHT - 60, f"Score: {player.score}")
+    draw_text(SCREEN_WIDTH - 150, SCREEN_HEIGHT - 60, f"Ammo: {player.ammo}/300")
+
+
+    # Restore matrices
+    glPopMatrix()
+    glMatrixMode(GL_PROJECTION)
+    glPopMatrix()
+    glMatrixMode(GL_MODELVIEW)
+    # Switch to orthographic projection
+    glMatrixMode(GL_PROJECTION)
+    glPushMatrix()
+    glLoadIdentity()
+    glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, -1, 1)
+    glMatrixMode(GL_MODELVIEW)
+    glPushMatrix()
+    glLoadIdentity()
+
     glDisable(GL_DEPTH_TEST)
     glDisable(GL_TEXTURE_2D)  # Add this line
     glEnable(GL_BLEND)
@@ -189,6 +238,12 @@ def draw_hud(player):
     glColor3f(1.0, 1.0, 1.0)
     draw_text(10, SCREEN_HEIGHT - 60, f"Score: {player.score}")
     draw_text(SCREEN_WIDTH - 150, SCREEN_HEIGHT - 60, f"Ammo: {player.ammo}/300")
+
+    # Re-enable previously disabled effects
+    glEnable(GL_DEPTH_TEST)
+    glEnable(GL_TEXTURE_2D)
+    glEnable(GL_LIGHTING)  # Re-enable lighting for 3D scene
+    
 
     glEnable(GL_DEPTH_TEST)
     glEnable(GL_TEXTURE_2D)  # Add this line

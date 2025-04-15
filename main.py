@@ -31,6 +31,13 @@ from texture_loader import load_texture  # Make sure this module is available
 def main():
     pygame.init()
     display = (SCREEN_WIDTH, SCREEN_HEIGHT)
+    pygame.display.gl_set_attribute(pygame.GL_RED_SIZE, 8)
+    pygame.display.gl_set_attribute(pygame.GL_GREEN_SIZE, 8)
+    pygame.display.gl_set_attribute(pygame.GL_BLUE_SIZE, 8)
+    pygame.display.gl_set_attribute(pygame.GL_ALPHA_SIZE, 8)
+    pygame.display.gl_set_attribute(pygame.GL_DEPTH_SIZE, 24)
+    pygame.display.gl_set_attribute(pygame.GL_DOUBLEBUFFER, 1)
+    
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
     pygame.display.set_caption("DOOM-like Game")
     glutInit()  # For GLUT font rendering
@@ -39,6 +46,26 @@ def main():
     glEnable(GL_TEXTURE_2D)
     glEnable(GL_BLEND)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
+    # Add lighting configuration
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+    glEnable(GL_COLOR_MATERIAL)
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
+    
+    # Set up fixed light in center of map (assuming 10x10 map)
+    glLight(GL_LIGHT0, GL_POSITION, (5.0, 3.0, 5.0, 1.0))  # Center position (x=5, y=3, z=5)
+    glLight(GL_LIGHT0, GL_AMBIENT, (0.5, 0.5, 0.5, 0.5))   # Low ambient light for dark corners
+    glLight(GL_LIGHT0, GL_SPECULAR, (1.0, 1.0, 1.0, 1.0))   # Bright diffuse for center
+    
+    # Increase attenuation for faster darkness falloff
+    glLight(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 0.1)
+    glLight(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.2)         # Increased linear falloff
+    glLight(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.08)     # Increased quadratic falloff
+
+    # Simple material properties
+    glMaterial(GL_FRONT, GL_SPECULAR, (0.0, 0.0, 0.0, 1.0))
+    glMaterial(GL_FRONT, GL_SHININESS, 0.0)
 
     glMatrixMode(GL_PROJECTION)
     gluPerspective(FOV, (display[0] / display[1]), 0.2, 50.0)
@@ -149,6 +176,16 @@ def main():
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
+        # # Update light position to stay centered on player
+        # light_pos = [
+        #     player.position[0],
+        #     player.position[1] + 1.0,  # Light closer to player
+        #     player.position[2],
+        #     1.0
+        # ]
+        # glLight(GL_LIGHT0, GL_POSITION, light_pos)
+
+        # Set the camera position and orientation
         gluLookAt(
             player.position[0],
             player.position[1],
